@@ -8,6 +8,7 @@ const app = express();
 
 const blogRoutes = require('./routes/blog');
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // application/json
 
 app.use((req, res, next) => {
@@ -21,6 +22,14 @@ app.use((req, res, next) => {
 });
 
 app.use('/blog', blogRoutes);
+
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message, data });
+  });
 
 mongoose
     .connect('mongodb+srv://michal:admin@cluster0-5a09w.mongodb.net/blog?retryWrites=true&w=majority')
