@@ -48,3 +48,52 @@ exports.getPosts = async (req, res, next) => {
     }
 
 };
+
+exports.getPost = async ({ params }, res, next) => {
+    try {
+        const id = params.id;
+        const post = await Post.findById(id);
+        res.status(200).send({
+            post: mapPosts(post)
+        });
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+
+};
+
+exports.updatePost = async ({ params, body }, res, next) => {
+    try {
+        const id = params.id;
+        const { title, content } = body;
+        await Post.findByIdAndUpdate(id, {
+            $set: { title, content }
+        });
+        res.status(200).send({ message: 'Post updated successfully!' });
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+
+};
+
+exports.deletePost = async ({ params }, res, next) => {
+    try {
+        const id = params.id;
+        await Post.findByIdAndRemove(id, {
+            useFindAndModify: false
+        });
+        res.status(200).send({ message: 'Post deleted successfully!' });
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+
+};
