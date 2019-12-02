@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const blogRoutes = require('./routes/blog');
+const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // application/json
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/blog', blogRoutes);
+app.use('/auth', authRoutes);
 
 app.use((error, req, res, next) => {
     console.log(error);

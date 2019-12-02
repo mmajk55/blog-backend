@@ -12,12 +12,14 @@ const mapPosts = posts => {
     };
 };
 
-exports.createPost = async ({ body }, res, next) => {
-    const title = body.title;
-    const content = body.content;
+exports.createPost = async (req, res, next) => {
+    console.log(req);
+    const { title, content } = req.body;
+    const creator = req.userId;
     const post = new Post({
-        title: title,
-        content: content
+        title,
+        content,
+        creator
     });
     try {
         await post.save();
@@ -62,7 +64,6 @@ exports.getPost = async ({ params }, res, next) => {
         }
         next(err);
     }
-
 };
 
 exports.updatePost = async ({ params, body }, res, next) => {
