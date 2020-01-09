@@ -7,6 +7,8 @@ const isAuth = require('../middleware/isAuth');
 
 router.get('/posts', blogController.getPosts);
 
+router.get('/user/posts', isAuth, blogController.getUserPosts);
+
 router.post('/post', isAuth, blogController.createPost);
 
 router.get('/post/:id', blogController.getPost);
